@@ -10,7 +10,10 @@ pkg_search_module(rvgpu_lib REQUIRED librvgpu)
 add_library(cudart SHARED cuda_runtime_api.c)
 set_target_properties(cudart PROPERTIES VERSION 11.0)
 
+message(${rvgpu_lib_LIBRARIES})
+message(${rvgpu_lib_LIBRARY_DIRS})
 target_link_libraries(cudart ${rvgpu_lib_LIBRARIES})
+target_link_directories(cudart PRIVATE ${rvgpu_lib_LIBRARY_DIRS})
 target_include_directories(cudart PRIVATE ${rvgpu_lib_INCLUDE_DIRS})
 target_include_directories(cudart PRIVATE /usr/include)
 
