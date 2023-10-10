@@ -7,17 +7,26 @@
 #include "cudaProfiler.h"
 
 #include "cuda_api.h"
-#include "fatbinary.h"
+
+#include "cuda_runtime.hpp"
 
 cudaError_t g_last_cudaError = cudaSuccess;
 
+cudart::Runtime *cudart_Runtime() {
+    static cudart::Runtime *rt = NULL;
+    if (rt == NULL) {
+        rt = new cudart::Runtime();
+    }
+
+    return rt;
+}
+
 extern "C" {
-    
+
 char __cudaInitModule(void **fatCubinHandle) {
 	printf("%s\n", __func__);
     return 0;
 }
-
 
 void **cudaRegisterFatBinaryInternal(void *fatCubin) {
     __fatDeviceText *fatDeviceText = (__fatDeviceText *)fatCubin;
@@ -57,7 +66,8 @@ __host__ cudaError_t CUDARTAPI cudaLaunchKernel(const void *hostFun, dim3 gridDi
 
 void ** CUDARTAPI __cudaRegisterFatBinary(void *fatCubin) {
 	printf("%s\n", __func__);
-    return cudaRegisterFatBinaryInternal(fatCubin);
+    static cudart::Runtime *rt = cudart_Runtime();
+    return rt->RegisterFatBinary(fatCubin);
 }
 
 void CUDARTAPI __cudaRegisterFunction(void **fatCubinHandle, const char *hostFun, char *deviceFun, const char *deviceName, int thread_limit, uint3 *tid, uint3 *bid, dim3 *bDim, dim3 *gDim) {

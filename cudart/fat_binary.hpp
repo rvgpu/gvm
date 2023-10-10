@@ -5,6 +5,14 @@
 #ifndef __RVG_FATBINARY_H__
 #define __RVG_FATBINARY_H__
 
+class fat_binary {
+public:
+    fat_binary();
+
+private:
+    
+};
+
 #include <stdint.h>
 
 #define ALIGNED(alignsize)  __attribute__((aligned(alignsize)))
