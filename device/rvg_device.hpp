@@ -7,7 +7,7 @@
 
 #include <cstdint>
 
-typedef enum RVGDeviceType {
+typedef enum class RVGDeviceType {
     CSimulator,
     PhysicalDevice,
 } RVGDeviceType;

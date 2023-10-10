@@ -8,7 +8,7 @@
 
 #include "cuda_runtime.hpp"
 
-using namespace cudart;
+using namespace cuda;
 
 Runtime::Runtime() {
     rvg = new RVGPU();

@@ -7,7 +7,7 @@
 #include "fat_binary.hpp"
 #include "rvgpu.hpp"
 
-namespace cudart {
+namespace cuda {
 
 class Runtime {
 public:
