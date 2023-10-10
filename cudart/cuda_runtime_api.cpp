@@ -12,14 +12,16 @@
 
 cudaError_t g_last_cudaError = cudaSuccess;
 
+#define likely(x) __builtin_expect(!!(x), 1)
 #define unlikely(x) __builtin_expect(!!(x), 0)
+
 inline cuda::Runtime *cuda_Runtime() {
-    static cuda::Runtime *rt = NULL;
-    if (unlikely(rt == NULL)) {
-        rt = new cuda::Runtime();
+    static cuda::Runtime *rtstatic = NULL;
+    if (unlikely(rtstatic == NULL)) {
+        rtstatic = new cuda::Runtime();
     }
 
-    return rt;
+    return rtstatic;
 }
 
 extern "C" {
@@ -40,8 +42,7 @@ __host__ cudaError_t CUDARTAPI cudaLaunchKernel(const void *hostFun, dim3 gridDi
 }
 
 void ** CUDARTAPI __cudaRegisterFatBinary(void *fatCubin) {
-	printf("%s\n", __func__);
-    static cuda::Runtime *rt = cuda_Runtime();
+    cuda::Runtime *rt = cuda_Runtime();
     return rt->RegisterFatBinary(fatCubin);
 }
 
