@@ -11,7 +11,7 @@
 using namespace cudart;
 
 Runtime::Runtime() {
-
+    rvg = new RVGPU();
 }
 
 void ** Runtime::RegisterFatBinary(void *fatCubin) {

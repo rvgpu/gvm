@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "fat_binary.hpp"
+#include "rvgpu.hpp"
 
 namespace cudart {
 
@@ -15,6 +16,7 @@ public:
     void ** RegisterFatBinary(void *fatCubin);
     
 private:
+    RVGPU *rvg;
 };
 
 }
