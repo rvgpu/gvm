@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-// #include "host_defines.h"
 #include "cuda_runtime_api.h"
 
 #include "builtin_types.h"
@@ -12,6 +11,8 @@
 
 cudaError_t g_last_cudaError = cudaSuccess;
 
+extern "C" {
+    
 char __cudaInitModule(void **fatCubinHandle) {
 	printf("%s\n", __func__);
     return 0;
@@ -118,4 +119,6 @@ cudaError_t CUDARTAPI cudaDeviceSynchronize(void) {
 cudaError_t cudaDeviceReset(void) {
 	printf("%s\n", __func__);
     return g_last_cudaError;
+}
+
 }
