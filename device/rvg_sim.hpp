@@ -8,17 +8,19 @@
 #include <cstdio>
 #include <cstdint>
 
+#include "rvgsim.h"
+
 #include "rvg_device.hpp"
 
 class RVGSim: public RVGDevice {
 public:
-    RVGSim() {}
+    RVGSim();
     void TestFact () {
         printf("this is RVGSim\n");
     }
 
 private:
-    
+    rvgsim *sim;
 };
 
 #endif // __RVG_DEVICE_H___
