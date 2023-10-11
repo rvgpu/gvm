@@ -2,12 +2,6 @@
 
 #include "cuda_runtime_api.h"
 
-#include "builtin_types.h"
-#include "driver_types.h"
-#include "cudaProfiler.h"
-
-#include "cuda_api.h"
-
 #include "cuda_runtime.hpp"
 
 cudaError_t g_last_cudaError = cudaSuccess;
