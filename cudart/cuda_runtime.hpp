@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "fat_binary.hpp"
+#include "cuda_fatbinary.hpp"
 #include "rvgpu.hpp"
 
 namespace cuda {

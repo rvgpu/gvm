@@ -4,8 +4,7 @@
 
 #include <cstdio>
 
-#include "fat_binary.hpp"
-
+#include "cuda_fatbinary.hpp"
 #include "cuda_runtime.hpp"
 
 using namespace cuda;

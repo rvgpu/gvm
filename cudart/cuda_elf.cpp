@@ -5,8 +5,7 @@
 #include <iostream>
 #include <cstring>
 
-#include "elf.h"
-#include "elf.hpp"
+#include "cuda_elf.hpp"
 
 using namespace cuda;
 

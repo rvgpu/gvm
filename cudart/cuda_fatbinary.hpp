@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <vector>
 
-#include "elf.hpp"
+#include "cuda_elf.hpp"
 
 #define ALIGNED(alignsize)  __attribute__((aligned(alignsize)))
 

@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <cstring>
 
-#include "fat_binary.hpp"
+#include "cuda_fatbinary.hpp"
 
 using namespace cuda;
 
