@@ -19,3 +19,12 @@ void ** Runtime::RegisterFatBinary(void *fatCubin) {
 
     return NULL;
 }
+
+uint64_t Runtime::Malloc(uint32_t size) {
+    return rvg->gpu_malloc(size);
+}
+
+void Runtime::Memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool host_to_device) {
+    rvg->gpu_memcpy(dst, src, count, host_to_device);
+    return;
+}

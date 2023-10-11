@@ -55,33 +55,28 @@ void __cudaUnregisterFatBinary(void **fatCubinHandle) {
 __host__ cudaError_t CUDARTAPI cudaMalloc(void **devPtr, size_t size) {
 	printf("%s\n", __func__);
 
-#if 0
-    uint64_t addr = gpu_malloc_addr;
-    gpu_malloc_addr += size;
-    *devPtr = (void *)addr;
-#endif
+    cuda::Runtime *rt = cuda_Runtime();
+    *devPtr = (void *) rt->Malloc((uint32_t)size);
 
-    return g_last_cudaError;
+    if (*devPtr) {
+        return g_last_cudaError = cudaSuccess;
+    } else {
+        return g_last_cudaError = cudaErrorMemoryAllocation;
+    }
 }
 
 __host__ cudaError_t CUDARTAPI cudaMemcpy(void *dst, const void *src, size_t count, enum cudaMemcpyKind kind) {
 	printf("%s\n", __func__);
 
-#if 0
-    if (cudaMemcpyKind == cudaMemcpyHostToDevice) {
-        uint8_t *addr = (uint8_t *)src;
-        for (uint32_t i = 0; i < count; i++) {
-            gpu->write_vram(dst + i, addr[i], 1);
-        }
-    } else if (cudaMemcpyKind == cudaMemcpyHostToDevice) {
-        uint8_t *addr = (uint8_t *)dst;
-        for (uint32_t i = 0; i < count; i++) {
-            addr[i] = gpu->read_vram(src + i, 1);
-        }
+    cuda::Runtime *rt = cuda_Runtime();
+
+    if (kind == cudaMemcpyHostToDevice) {
+        rt->Memcpy((uint64_t)dst, (uint64_t)src, (uint32_t)count, true);
+    } else if (kind == cudaMemcpyDeviceToHost) {
+        rt->Memcpy((uint64_t)dst, (uint64_t)src, (uint32_t)count, false);
     } else {
         // TODO: HostToHost, DeviceToDevice
     }
-#endif
 
     return g_last_cudaError;
 }
