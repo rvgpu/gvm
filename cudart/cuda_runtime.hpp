@@ -17,6 +17,7 @@ public:
     
 private:
     RVGPU *rvg;
+    FatBinary *fatbin;
 };
 
 }
