@@ -15,9 +15,19 @@ Runtime::Runtime() {
 }
 
 void ** Runtime::RegisterFatBinary(void *fatCubin) {
-    fatbin = new FatBinary(fatCubin);
+    FatBinary *fatbin = new FatBinary(fatCubin);
 
-    return NULL;
+    return (void **)fatbin;
+}
+
+void Runtime::RegisterFunction(void **fatCubinHandle, char *deviceFun) {
+    FatBinary *fatbin = static_cast<FatBinary *>((void *)fatCubinHandle);
+
+    uint64_t funbin = fatbin->GetFunctionBin(deviceFun);
+    uint32_t size = fatbin->GetFunctionBinSize(deviceFun);
+
+    printf("%ld\n", funbin);
+    printf("%d\n", size);
 }
 
 uint64_t Runtime::Malloc(uint32_t size) {

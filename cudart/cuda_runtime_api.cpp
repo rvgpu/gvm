@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <iostream>
 
 #include "cuda_runtime_api.h"
 
@@ -41,7 +42,9 @@ void ** CUDARTAPI __cudaRegisterFatBinary(void *fatCubin) {
 }
 
 void CUDARTAPI __cudaRegisterFunction(void **fatCubinHandle, const char *hostFun, char *deviceFun, const char *deviceName, int thread_limit, uint3 *tid, uint3 *bid, dim3 *bDim, dim3 *gDim) {
-    printf("%s\n", __func__);
+    // only deviceFun used ???  @qihangkong
+    cuda::Runtime *rt = cuda_Runtime();
+    return rt->RegisterFunction(fatCubinHandle, deviceFun);
 }
 
 void CUDARTAPI __cudaRegisterFatBinaryEnd(void **fatCubinHandle) {

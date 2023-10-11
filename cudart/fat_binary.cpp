@@ -40,3 +40,11 @@ FatBinary::FatBinary(void *fatCubin) {
         next_entry_size = sizeof(bundle_entry) + next_entry->entry_id_length;
     }
 }
+
+uint64_t FatBinary::GetFunctionBin(char *funcname) {
+    return 0;
+}
+
+uint32_t FatBinary::GetFunctionBinSize(char *funcname) {
+    return 0;
+}
