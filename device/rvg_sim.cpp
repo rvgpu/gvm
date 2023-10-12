@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdint>
 
+#include "command_stream.h"
 #include "rvg_sim.hpp"
 
 #define SM_NUM                      8
@@ -59,4 +60,19 @@ void RVGSim::gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool h
     }
 
     return;
+}
+
+
+void RVGSim::Run1D(uint32_t count, uint32_t shaderbin, uint64_t args, uint32_t arg_size) {
+    rvgpu_command cmd;
+    cmd.type = RVGPU_COMMAND_TYPE_1D;
+    cmd.range = {.x=count, .y=0, .z=0};
+    cmd.shader.pointer = shaderbin;
+    cmd.shader.stack_pointer = stack_pointer;
+    cmd.shader.argsize = arg_size;
+    for (uint32_t i=0; i<arg_size; i++) {
+        cmd.shader.args[i] = ((uint64_t *)args)[i];
+    }
+
+    sim->run_with_vram(uint64_t(&cmd));
 }

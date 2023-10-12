@@ -32,8 +32,9 @@ cudaError_t CUDARTAPI __cudaPopCallConfiguration(dim3 *gridDim, dim3 *blockDim, 
 }
 
 __host__ cudaError_t CUDARTAPI cudaLaunchKernel(const void *hostFun, dim3 gridDim, dim3 blockDim, void **args, size_t sharedMem, cudaStream_t stream) {
-	printf("%s\n", __func__);
-    return g_last_cudaError;    
+    cuda::Runtime *rt = cuda_Runtime();
+    rt->LaunchKerne(hostFun, gridDim, blockDim, args);
+    return g_last_cudaError;
 }
 
 void ** CUDARTAPI __cudaRegisterFatBinary(void *fatCubin) {
