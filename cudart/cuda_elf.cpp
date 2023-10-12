@@ -68,7 +68,7 @@ bool ELF::GetFunction(void *psym, uint64_t &bin, uint32_t &size) {
 
     if ((sym->st_info & 0xf) == STT_FUNC) {
         Elf64_Shdr *sh = section_header + sym->st_shndx;
-        SectionHeaderInfo(sh);
+        // SectionHeaderInfo(sh);
 
         uint64_t texaddr = sh->sh_offset + uint64_t(header);
         bin = texaddr + sym->st_value;
