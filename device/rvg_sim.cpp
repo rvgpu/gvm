@@ -19,26 +19,12 @@ RVGSim::RVGSim() {
 }
 
 uint64_t RVGSim::gpu_malloc(uint32_t size) {
-    printf("### RVGSim::gpu_malloc\n");
-    printf("size = %u\n", size);
-
     uint64_t addr = gpu_malloc_addr;
     gpu_malloc_addr += size;
     return addr;
 }
 
 void RVGSim::gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool host_to_device) {
-    printf("### RVGSim::gpu_memcpy\n");
-    printf("host_to_device = %d\n", host_to_device);
-
-    // Host to device data
-    if (host_to_device) {
-        float *src_float = (float *)src;
-        for (uint32_t n = 0; n < count / sizeof(float); n++) {
-            printf("src_float[%u] = %f\n", n, *(src_float + n));
-        }
-    }
-
     if (host_to_device) {
         uint8_t *addr = (uint8_t *)src;
         for (uint32_t i = 0; i < count; i++) {
@@ -50,15 +36,6 @@ void RVGSim::gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool h
             addr[i] = sim->read_vram(src + i, 1);
         }
     }
-
-    // Device to host data
-    if (!host_to_device) {
-        float *dst_float = (float *)dst;
-        for (uint32_t n = 0; n < count / sizeof(float); n++) {
-            printf("dst_float[%u] = %f\n", n, *(dst_float + n));
-        }
-    }
-
     return;
 }
 

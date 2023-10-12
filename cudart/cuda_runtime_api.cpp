@@ -22,12 +22,10 @@ inline cuda::Runtime *cuda_Runtime() {
 extern "C" {
 
 char __cudaInitModule(void **fatCubinHandle) {
-	printf("%s\n", __func__);
     return 0;
 }
 
 cudaError_t CUDARTAPI __cudaPopCallConfiguration(dim3 *gridDim, dim3 *blockDim, size_t *sharedMem, void *stream) {
-	printf("%s\n", __func__);
     return g_last_cudaError;
 }
 
@@ -49,15 +47,12 @@ void CUDARTAPI __cudaRegisterFunction(void **fatCubinHandle, const char *hostFun
 }
 
 void CUDARTAPI __cudaRegisterFatBinaryEnd(void **fatCubinHandle) {
-    printf("%s\n", __func__);
 }
 
 void __cudaUnregisterFatBinary(void **fatCubinHandle) {
-	printf("%s\n", __func__);
 }
 
 __host__ cudaError_t CUDARTAPI cudaMalloc(void **devPtr, size_t size) {
-	printf("%s\n", __func__);
 
     cuda::Runtime *rt = cuda_Runtime();
     *devPtr = (void *) rt->Malloc((uint32_t)size);
@@ -70,7 +65,6 @@ __host__ cudaError_t CUDARTAPI cudaMalloc(void **devPtr, size_t size) {
 }
 
 __host__ cudaError_t CUDARTAPI cudaMemcpy(void *dst, const void *src, size_t count, enum cudaMemcpyKind kind) {
-	printf("%s\n", __func__);
 
     cuda::Runtime *rt = cuda_Runtime();
 
@@ -86,17 +80,14 @@ __host__ cudaError_t CUDARTAPI cudaMemcpy(void *dst, const void *src, size_t cou
 }
 
 unsigned CUDARTAPI __cudaPushCallConfiguration(dim3 gridDim, dim3 blockDim, size_t sharedMem, struct CUstream_st *stream) {
-	printf("%s\n", __func__);
     return 0;
 }
 
 cudaError_t CUDARTAPI cudaDeviceSynchronize(void) {
-	printf("%s\n", __func__);
     return g_last_cudaError;
 }
 
 cudaError_t cudaDeviceReset(void) {
-	printf("%s\n", __func__);
     return g_last_cudaError;
 }
 
