@@ -48,8 +48,7 @@ namespace cuda {
 class FatBinary {
 public:
     FatBinary(void *fatCubin);
-    uint64_t GetFunctionBin(char *funcname);
-    uint32_t GetFunctionBinSize(char *funcname);
+    DeviceFunc *GetDeviceFunc(char *funcname);
 
 private:
     // Structure of cuda_fatbin in ELF file

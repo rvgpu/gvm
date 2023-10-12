@@ -8,19 +8,39 @@
 #include "elf.h"
 
 namespace cuda {
+
+typedef struct {
+    char        *name;
+    uint64_t    binary;
+    uint32_t    binsize;
+} DeviceFunc;
+
 class ELF {
 public:
     ELF(void *elf, int size);
+    void *FindSymbol(char *name);
+    bool GetFunction(void *psym, uint64_t &bin, uint32_t &size);
 
 private:
     bool CheckMagic(void *header);
 
     // function to print elf info
     void HeaderInfo(void *header);
+    void SectionHeaderInfo(void *header);
+    char *SymbolName(uint32_t id);
+
+    // ELF header
+    Elf64_Ehdr *header;
+
+    // Section Header
+    Elf64_Shdr *section_header;
 
     // store string table and symbol table
-    Elf64_Sym   *symbol_table;
+    Elf64_Shdr  *strtab_section_header;
     char        *string_table;
+
+    Elf64_Shdr  *symtab_section_header;
+    Elf64_Sym   *symbol_table;
 };
 
 }

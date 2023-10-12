@@ -22,11 +22,9 @@ void ** Runtime::RegisterFatBinary(void *fatCubin) {
 void Runtime::RegisterFunction(void **fatCubinHandle, char *deviceFun) {
     FatBinary *fatbin = static_cast<FatBinary *>((void *)fatCubinHandle);
 
-    uint64_t funbin = fatbin->GetFunctionBin(deviceFun);
-    uint32_t size = fatbin->GetFunctionBinSize(deviceFun);
+    DeviceFunc *func = fatbin->GetDeviceFunc(deviceFun);
 
-    printf("%ld\n", funbin);
-    printf("%d\n", size);
+    (void )(func);
 }
 
 uint64_t Runtime::Malloc(uint32_t size) {

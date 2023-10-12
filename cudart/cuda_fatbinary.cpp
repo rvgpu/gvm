@@ -41,10 +41,21 @@ FatBinary::FatBinary(void *fatCubin) {
     }
 }
 
-uint64_t FatBinary::GetFunctionBin(char *funcname) {
-    return 0;
-}
+DeviceFunc *FatBinary::GetDeviceFunc(char *funcname) {
+    DeviceFunc *ret = NULL;
+    for (ELF *elf : elfs) {
+        void *sym = elf->FindSymbol(funcname);
+        if (sym) {
+            uint64_t bin;
+            uint32_t size;
+            if (elf->GetFunction(sym, bin, size)) {
+                ret = new DeviceFunc();
+                ret->name = funcname;
+                ret->binary = bin;
+                ret->binsize = size;
+            }
+        }
+    }
 
-uint32_t FatBinary::GetFunctionBinSize(char *funcname) {
-    return 0;
+    return ret;
 }
