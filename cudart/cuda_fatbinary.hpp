@@ -73,6 +73,8 @@ private:
         bundle_entry    entries[0];             // Bundle Entries
     } COB_header ALIGNED(8);
 
+    void EntryInfo(bundle_entry *entry, uint32_t entry_size);
+
     std::vector<ELF *>  elfs;
 };
 
