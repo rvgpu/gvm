@@ -40,10 +40,12 @@ void ** CUDARTAPI __cudaRegisterFatBinary(void *fatCubin) {
     return rt->RegisterFatBinary(fatCubin);
 }
 
+/**
+ * hostFunc: the pointer to function evice_stub__xxx, which will call cudaLaunchKernel
+ */
 void CUDARTAPI __cudaRegisterFunction(void **fatCubinHandle, const char *hostFun, char *deviceFun, const char *deviceName, int thread_limit, uint3 *tid, uint3 *bid, dim3 *bDim, dim3 *gDim) {
-    // only deviceFun used ???  @qihangkong
     cuda::Runtime *rt = cuda_Runtime();
-    return rt->RegisterFunction(fatCubinHandle, deviceFun);
+    return rt->RegisterFunction(fatCubinHandle, hostFun, deviceFun);
 }
 
 void CUDARTAPI __cudaRegisterFatBinaryEnd(void **fatCubinHandle) {

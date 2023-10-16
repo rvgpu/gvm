@@ -20,10 +20,10 @@ void ** Runtime::RegisterFatBinary(void *fatCubin) {
     return (void **)fatbin;
 }
 
-void Runtime::RegisterFunction(void **fatCubinHandle, char *deviceFun) {
+void Runtime::RegisterFunction(void **fatCubinHandle, const char *hostFun, char *deviceFun) {
     FatBinary *fatbin = static_cast<FatBinary *>((void *)fatCubinHandle);
 
-    stored_func = fatbin->GetDeviceFunc(deviceFun);
+    stored_func.insert(std::make_pair<uint64_t, DeviceFunc *>(uint64_t(hostFun), fatbin->GetDeviceFunc(deviceFun)));
 }
 
 uint64_t Runtime::Malloc(uint32_t size) {
@@ -36,10 +36,12 @@ void Runtime::Memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool host
 }
 
 void Runtime::LaunchKerne(const void *hostFun, dim3 gridDim, dim3 blockDim, void **args) {
-    uint64_t funcaddr = rvg->gpu_malloc(stored_func->binsize);
-    rvg->gpu_memcpy(funcaddr, stored_func->binary, stored_func->binsize, true);
+    DeviceFunc *dev_fun = stored_func[uint64_t(hostFun)];
 
-    printf("Run Kernel\n");
+    uint64_t funcaddr = rvg->gpu_malloc(dev_fun->binsize);
+    rvg->gpu_memcpy(funcaddr, dev_fun->binary, dev_fun->binsize, true);
+
+    printf("Run Kernel:\n");
     uint32_t argsize = 3;
     uint64_t *params = (uint64_t *)malloc(sizeof(uint64_t) * argsize);
     for (uint32_t i=0; i<argsize; i++) {
