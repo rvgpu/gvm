@@ -42,10 +42,10 @@ void Runtime::LaunchKerne(const void *hostFun, dim3 gridDim, dim3 blockDim, void
     rvg->gpu_memcpy(funcaddr, dev_fun->binary, dev_fun->binsize, true);
 
     printf("Run Kernel:\n");
-    uint32_t argsize = 3;
+    uint32_t argsize = *((uint32_t *)args);
     uint64_t *params = (uint64_t *)malloc(sizeof(uint64_t) * argsize);
     for (uint32_t i=0; i<argsize; i++) {
-        params[i] = *((uint64_t *)args[i]);
+        params[i] = *((uint64_t *)args[i + 1]);
     }
 
     rvg->Run1D(gridDim.z, funcaddr, uint64_t(params), argsize);
