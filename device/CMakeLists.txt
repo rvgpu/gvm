@@ -1,6 +1,6 @@
 set(LIBRVGDEV_FILES
     rvgpu.cpp
-    rvg_sim.cpp
+    rvg_simulator.cpp
    )
 
 add_library(rvgpu SHARED ${LIBRVGDEV_FILES})

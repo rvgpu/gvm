@@ -4,11 +4,11 @@
 
 #include "rvgpu.hpp"
 
-#include "rvg_sim.hpp"
-#include "rvg_phy.hpp"
+#include "rvg_simulator.hpp"
+#include "rvg_physical.hpp"
 
 RVGPU::RVGPU() {
-    dev = new RVGSim();
+    dev = new RVGSimulator();
 
     dev->TestFact();
 }

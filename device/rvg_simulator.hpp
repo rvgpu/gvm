@@ -12,9 +12,9 @@
 
 #include "rvg_device.hpp"
 
-class RVGSim: public RVGDevice {
+class RVGSimulator: public RVGDevice {
 public:
-    RVGSim();
+    RVGSimulator();
     void TestFact () {
         printf("this is RVGSim\n");
     }
