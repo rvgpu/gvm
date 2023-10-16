@@ -15,9 +15,6 @@
 class RVGSimulator: public RVGDevice {
 public:
     RVGSimulator();
-    void TestFact () {
-        printf("this is RVGSim\n");
-    }
 
     uint64_t gpu_malloc(uint32_t size);
     void gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool host_to_device);

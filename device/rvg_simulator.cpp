@@ -16,6 +16,8 @@ RVGSimulator::RVGSimulator() {
     gpu_malloc_addr = 0;
     stack_pointer = gpu_malloc(SM_STACK_SIZE * SM_NUM + 0x1000);
     stack_pointer += 0x1000;
+
+    printf("This is RVG Simulator\n");
 }
 
 uint64_t RVGSimulator::gpu_malloc(uint32_t size) {

@@ -17,8 +17,6 @@ public:
     RVGDevice () {};
     ~RVGDevice() {};
 
-    virtual void TestFact() = 0;
-
     virtual uint64_t gpu_malloc(uint32_t size) = 0;
     virtual void gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool host_to_device) = 0;
 

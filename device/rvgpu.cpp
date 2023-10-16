@@ -9,8 +9,6 @@
 
 RVGPU::RVGPU() {
     dev = new RVGSimulator();
-
-    dev->TestFact();
 }
 
 uint64_t RVGPU::gpu_malloc(uint32_t size) {
