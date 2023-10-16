@@ -3,6 +3,7 @@
  */
 
 #include <cstdio>
+#include <cstdlib>
 
 #include "cuda_fatbinary.hpp"
 #include "cuda_runtime.hpp"
@@ -39,10 +40,11 @@ void Runtime::LaunchKerne(const void *hostFun, dim3 gridDim, dim3 blockDim, void
     rvg->gpu_memcpy(funcaddr, stored_func->binary, stored_func->binsize, true);
 
     printf("Run Kernel\n");
-    uint64_t params[3];
-    params[0] = *((uint32_t *)args[0]);
-    params[1] = *((uint64_t *)args[1]);
-    params[2] = *((uint64_t *)args[2]);
+    uint32_t argsize = 3;
+    uint64_t *params = (uint64_t *)malloc(sizeof(uint64_t) * argsize);
+    for (uint32_t i=0; i<argsize; i++) {
+        params[i] = *((uint64_t *)args[i]);
+    }
 
-    rvg->Run1D(gridDim.z, funcaddr, uint64_t(params), 3);
+    rvg->Run1D(gridDim.z, funcaddr, uint64_t(params), argsize);
 }
