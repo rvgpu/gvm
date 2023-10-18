@@ -4,6 +4,8 @@
 
 #include <vector>
 #include <map>
+#include <stack>
+
 #include "cuda_runtime_api.h"
 
 #include "cuda_fatbinary.hpp"
@@ -21,11 +23,18 @@ public:
     uint64_t Malloc(uint32_t size);
     void Memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool host_to_device);
 
-
+    uint32_t PushCallConfiguration(dim3 gridDim, dim3 blockDim);
+    uint32_t PopCallConfiguration(dim3 *grdiDim, dim3 *blockDim);
     void LaunchKerne(const void *hostFun, dim3 gridDim, dim3 blockDim, void **args);
 private:
+    typedef struct {
+        dim3 grid;
+        dim3 block;
+    } Dimension;
+
     RVGPU *rvg;
 
+    std::stack<Dimension> mCallConfig;
     std::map<uint64_t, DeviceFunc *> stored_func;
 };
 

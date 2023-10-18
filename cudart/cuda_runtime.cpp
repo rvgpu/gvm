@@ -35,6 +35,31 @@ void Runtime::Memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool host
     return;
 }
 
+uint32_t Runtime::PushCallConfiguration(dim3 gridDim, dim3 blockDim) {
+    Dimension dim = {.grid = gridDim, .block = blockDim};
+    mCallConfig.push(dim);
+
+    return 0;
+}
+
+uint32_t Runtime::PopCallConfiguration(dim3 *gridDim, dim3 *blockDim) {
+    uint32_t ret = 0;
+    if (!mCallConfig.empty()) {
+        Dimension dim = mCallConfig.top();
+        mCallConfig.pop();
+        gridDim->x = dim.grid.x;
+        gridDim->y = dim.grid.y;
+        gridDim->z = dim.grid.z;
+        blockDim->x = dim.block.x;
+        blockDim->y = dim.block.y;
+        blockDim->z = dim.block.z;
+    } else {
+        ret = 1;
+    }
+
+    return ret;
+}
+
 void Runtime::LaunchKerne(const void *hostFun, dim3 gridDim, dim3 blockDim, void **args) {
     DeviceFunc *dev_fun = stored_func[uint64_t(hostFun)];
 
@@ -48,5 +73,5 @@ void Runtime::LaunchKerne(const void *hostFun, dim3 gridDim, dim3 blockDim, void
         params[i] = *((uint64_t *)args[i + 1]);
     }
 
-    rvg->Run1D(gridDim.z, funcaddr, uint64_t(params), argsize);
+    rvg->Run1D(blockDim.x, funcaddr, uint64_t(params), argsize);
 }

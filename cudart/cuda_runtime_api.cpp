@@ -25,8 +25,18 @@ char __cudaInitModule(void **fatCubinHandle) {
     return 0;
 }
 
+unsigned CUDARTAPI __cudaPushCallConfiguration(dim3 gridDim, dim3 blockDim, size_t sharedMem, struct CUstream_st *stream) {
+    cuda::Runtime *rt = cuda_Runtime();
+
+    return rt->PushCallConfiguration(gridDim, blockDim);
+}
+
 cudaError_t CUDARTAPI __cudaPopCallConfiguration(dim3 *gridDim, dim3 *blockDim, size_t *sharedMem, void *stream) {
-    return g_last_cudaError;
+    cudaError_t err = cudaSuccess;
+
+    cuda::Runtime *rt = cuda_Runtime();
+    rt->PopCallConfiguration(gridDim, blockDim);
+    return err;
 }
 
 __host__ cudaError_t CUDARTAPI cudaLaunchKernel(const void *hostFun, dim3 gridDim, dim3 blockDim, void **args, size_t sharedMem, cudaStream_t stream) {
@@ -55,7 +65,6 @@ void __cudaUnregisterFatBinary(void **fatCubinHandle) {
 }
 
 __host__ cudaError_t CUDARTAPI cudaMalloc(void **devPtr, size_t size) {
-
     cuda::Runtime *rt = cuda_Runtime();
     *devPtr = (void *) rt->Malloc((uint32_t)size);
 
@@ -67,7 +76,6 @@ __host__ cudaError_t CUDARTAPI cudaMalloc(void **devPtr, size_t size) {
 }
 
 __host__ cudaError_t CUDARTAPI cudaMemcpy(void *dst, const void *src, size_t count, enum cudaMemcpyKind kind) {
-
     cuda::Runtime *rt = cuda_Runtime();
 
     if (kind == cudaMemcpyHostToDevice) {
@@ -79,10 +87,6 @@ __host__ cudaError_t CUDARTAPI cudaMemcpy(void *dst, const void *src, size_t cou
     }
 
     return g_last_cudaError;
-}
-
-unsigned CUDARTAPI __cudaPushCallConfiguration(dim3 gridDim, dim3 blockDim, size_t sharedMem, struct CUstream_st *stream) {
-    return 0;
 }
 
 cudaError_t CUDARTAPI cudaDeviceSynchronize(void) {
