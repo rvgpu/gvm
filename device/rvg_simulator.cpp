@@ -62,5 +62,6 @@ void RVGSimulator::Run1D(uint32_t count, uint32_t shaderbin, uint64_t args, uint
         cmd.shader.args[i] = ((uint64_t *)args)[i];
     }
 
-    sim->run_with_vram(uint64_t(&cmd));
+    sim->write_register(0x1000, uint64_t(&cmd));
+    sim->write_register(0x1008, 1);
 }
