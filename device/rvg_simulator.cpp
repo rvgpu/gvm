@@ -63,6 +63,11 @@ void RVGSimulator::Run1D(uint32_t count, uint32_t shaderbin, uint64_t args, uint
     }
     cmd.page_table_base = mm->get_page_table_base();
 
-    sim->write_register(0x1000, uint64_t(&cmd));
+    uint64_t cmd_addr = gpu_malloc(sizeof(rvgpu_command));
+    gpu_memcpy(cmd_addr, uint64_t(&cmd), sizeof(rvgpu_command), true);
+
+    sim->write_register(0x1000, cmd_addr);
+    sim->write_register(0x1010, mm->get_page_table_base());
+
     sim->write_register(0x1008, 1);
 }
