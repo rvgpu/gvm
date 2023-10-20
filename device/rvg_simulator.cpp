@@ -61,7 +61,6 @@ void RVGSimulator::Run1D(uint32_t count, uint32_t shaderbin, uint64_t args, uint
     for (uint32_t i=0; i<arg_size; i++) {
         cmd.shader.args[i] = ((uint64_t *)args)[i];
     }
-    cmd.page_table_base = mm->get_page_table_base();
 
     uint64_t cmd_addr = gpu_malloc(sizeof(rvgpu_command));
     gpu_memcpy(cmd_addr, uint64_t(&cmd), sizeof(rvgpu_command), true);
