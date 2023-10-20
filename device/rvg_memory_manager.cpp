@@ -31,6 +31,10 @@ void rvgmm::set_malloc_addr(uint64_t addr) {
     GPU_MALLOC_ADDR = addr;
 }
 
+uint64_t rvgmm::get_page_table_base() {
+    return PT_BASE;
+}
+
 uint64_t rvgmm::lookup_page_table(uint64_t pt_base, uint64_t index) {
     uint64_t result;
     uint64_t pt_entry = m_sim->read_vram(pt_base + index * 8, 8);

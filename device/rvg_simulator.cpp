@@ -61,6 +61,7 @@ void RVGSimulator::Run1D(uint32_t count, uint32_t shaderbin, uint64_t args, uint
     for (uint32_t i=0; i<arg_size; i++) {
         cmd.shader.args[i] = ((uint64_t *)args)[i];
     }
+    cmd.page_table_base = mm->get_page_table_base();
 
     sim->write_register(0x1000, uint64_t(&cmd));
     sim->write_register(0x1008, 1);

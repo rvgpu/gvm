@@ -12,6 +12,7 @@ public:
     rvgmm(rvgsim *sim);
     uint64_t get_malloc_addr();
     void set_malloc_addr(uint64_t addr);
+    uint64_t get_page_table_base();
 
     uint64_t lookup_page_table(uint64_t pt_base, uint64_t index);
     void create_page_table(uint64_t va);
