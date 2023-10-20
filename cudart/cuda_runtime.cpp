@@ -66,7 +66,6 @@ void Runtime::LaunchKerne(const void *hostFun, dim3 gridDim, dim3 blockDim, void
     uint64_t funcaddr = rvg->gpu_malloc(dev_fun->binsize);
     rvg->gpu_memcpy(funcaddr, dev_fun->binary, dev_fun->binsize, true);
 
-    printf("Run Kernel:\n");
     uint32_t argsize = *((uint32_t *)args);
     uint64_t *params = (uint64_t *)malloc(sizeof(uint64_t) * argsize);
     for (uint32_t i=0; i<argsize; i++) {
