@@ -24,7 +24,7 @@ uint64_t RVGSimulator::gpu_malloc(uint32_t size) {
     uint64_t addr = mm->get_malloc_addr();
 
     // Create page table
-    uint32_t pt_count = ((size - 1) / 0x1000) + 1;
+    uint32_t pt_count = ((addr + size) / 0x1000) - (addr / 0x1000) + 1;
     for (uint32_t i = 0; i < pt_count; i++) {
         mm->create_page_table(addr + i * 0x1000);
     }
