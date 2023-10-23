@@ -72,5 +72,5 @@ void Runtime::LaunchKerne(const void *hostFun, dim3 gridDim, dim3 blockDim, void
         params[i] = *((uint64_t *)args[i + 1]);
     }
 
-    rvg->Run1D(blockDim.x, funcaddr, uint64_t(params), argsize);
+    rvg->RunKernel(blockDim.x, blockDim.y, blockDim.z, funcaddr, uint64_t(params), argsize);
 }

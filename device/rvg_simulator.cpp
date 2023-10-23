@@ -51,15 +51,14 @@ void RVGSimulator::gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, 
     }
 }
 
-void RVGSimulator::Run1D(uint32_t count, uint32_t shaderbin, uint64_t args, uint32_t arg_size) {
+void RVGSimulator::RunKernel(uint32_t dimx, uint32_t dimy, uint32_t dimz, uint32_t shaderbin, uint64_t args, uint32_t arg_size) {
     rvgpu_command cmd;
-    cmd.type = RVGPU_COMMAND_TYPE_1D;
-    cmd.range = {.x=count, .y=0, .z=0};
-    cmd.shader.pointer = shaderbin;
-    cmd.shader.stack_pointer = stack_pointer;
-    cmd.shader.argsize = arg_size;
+    cmd.dim = {.x=dimx, .y=dimy, .z=dimz};
+    cmd.program.pointer = shaderbin;
+    cmd.program.stack_pointer = stack_pointer;
+    cmd.program.argsize = arg_size;
     for (uint32_t i=0; i<arg_size; i++) {
-        cmd.shader.args[i] = ((uint64_t *)args)[i];
+        cmd.program.args[i] = ((uint64_t *)args)[i];
     }
 
     uint64_t cmd_addr = gpu_malloc(sizeof(rvgpu_command));

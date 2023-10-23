@@ -20,6 +20,6 @@ void RVGPU::gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool ho
     return;
 }
 
-void RVGPU::Run1D(uint32_t count, uint32_t shaderbin, uint64_t args, uint32_t arg_size) {
-    dev->Run1D(count, shaderbin, args, arg_size);
+void RVGPU::RunKernel(uint32_t dimx, uint32_t dimy, uint32_t dimz, uint32_t shaderbin, uint64_t args, uint32_t arg_size) {
+    dev->RunKernel(dimx, dimy, dimz, shaderbin, args, arg_size);
 }
