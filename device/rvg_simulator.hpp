@@ -19,13 +19,11 @@ public:
 
     uint64_t gpu_malloc(uint32_t size);
     void gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool host_to_device);
-
-    void RunKernel(uint32_t dimx, uint32_t dimy, uint32_t dimz, uint32_t shaderbin, uint64_t args, uint32_t arg_size);
+    void SubmitJobs(uint64_t cmds);
 private:
     rvgsim *sim;
     rvgmm *mm;
     uint64_t pc;
-    uint64_t stack_pointer;
 };
 
 #endif // __RVG_DEVICE_H___

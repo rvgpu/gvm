@@ -14,16 +14,18 @@ typedef enum class RVGDeviceType {
 
 class RVGDevice {
 public:
-    RVGDevice () {};
-    ~RVGDevice() {};
+    RVGDevice ();
+    ~RVGDevice();
 
+    /* Virtual Interface */
     virtual uint64_t gpu_malloc(uint32_t size) = 0;
     virtual void gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, bool host_to_device) = 0;
+    virtual void SubmitJobs(uint64_t cmds) = 0;
 
-    virtual void RunKernel(uint32_t dimx, uint32_t dimy, uint32_t dimz, uint32_t shaderbin, uint64_t args, uint32_t arg_size) = 0;
+    /* Real Interface */
+    void RunKernel(uint32_t dimx, uint32_t dimy, uint32_t dimz, uint32_t shaderbin, uint64_t args, uint32_t arg_size);
 
 private:
-    
 };
 
 #endif // __RVG_DEVICE_H___

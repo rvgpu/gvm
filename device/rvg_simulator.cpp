@@ -14,8 +14,6 @@
 RVGSimulator::RVGSimulator() {
     sim = new rvgsim();
     mm = new rvgmm(sim);
-    stack_pointer = gpu_malloc(SM_STACK_SIZE * SM_NUM + 0x1000);
-    stack_pointer += 0x1000;
 
     printf("This is RVG Simulator\n");
 }
@@ -51,21 +49,8 @@ void RVGSimulator::gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, 
     }
 }
 
-void RVGSimulator::RunKernel(uint32_t dimx, uint32_t dimy, uint32_t dimz, uint32_t shaderbin, uint64_t args, uint32_t arg_size) {
-    rvgpu_command cmd;
-    cmd.dim = {.x=dimx, .y=dimy, .z=dimz};
-    cmd.program.pointer = shaderbin;
-    cmd.program.stack_pointer = stack_pointer;
-    cmd.program.argsize = arg_size;
-    for (uint32_t i=0; i<arg_size; i++) {
-        cmd.program.args[i] = ((uint64_t *)args)[i];
-    }
-
-    uint64_t cmd_addr = gpu_malloc(sizeof(rvgpu_command));
-    gpu_memcpy(cmd_addr, uint64_t(&cmd), sizeof(rvgpu_command), true);
-
-    sim->write_register(0x1000, cmd_addr);
+void RVGSimulator::SubmitJobs(uint64_t cmds) {
+    sim->write_register(0x1000, cmds);
     sim->write_register(0x1010, mm->get_page_table_base());
-
     sim->write_register(0x1008, 1);
 }

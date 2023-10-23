@@ -1,5 +1,6 @@
 set(LIBRVGDEV_FILES
     rvgpu.cpp
+    rvg_device.cpp
     rvg_simulator.cpp
     rvg_memory_manager.cpp
    )
