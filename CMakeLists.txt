@@ -10,6 +10,9 @@ pkg_search_module(rvgsim REQUIRED librvgsim)
 link_directories(rvgpu PRIVATE ${rvgsim_LIBRARY_DIRS})
 include_directories(rvgpu PRIVATE ${rvgsim_INCLUDE_DIRS})
 
+include_directories(include)
+
+add_subdirectory(include)
 add_subdirectory(device)
 add_subdirectory(cudart)
 # add_subdirectory(runtime)
