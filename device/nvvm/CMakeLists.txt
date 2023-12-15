@@ -3,4 +3,4 @@ execute_process(
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libdevice.10.bc DESTINATION nvvm)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libdevice.10.bc DESTINATION nvvm/libdevice)
