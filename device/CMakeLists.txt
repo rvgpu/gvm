@@ -1,3 +1,5 @@
+add_subdirectory(nvvm)
+
 set(LIBRVGDEV_FILES
     rvgpu.cpp
     rvg_device.cpp
