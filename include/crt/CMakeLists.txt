@@ -1,2 +1,4 @@
 file(GLOB CRT_HEADER_FILES *.h)
 install(FILES ${CRT_HEADER_FILES} DESTINATION include/crt)
+file(GLOB INC_HPP_FILES *.hpp)
+install(FILES ${INC_HPP_FILES} DESTINATION include/crt)
