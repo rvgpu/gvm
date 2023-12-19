@@ -14,7 +14,7 @@ FatBinary::FatBinary(void *fatCubin) {
     COB_header *cob = (COB_header *)fatDeviceText->pCOB;
     bundle_entry *next_entry = (bundle_entry *)cob->entries;
     uint32_t next_entry_size = sizeof(bundle_entry) + next_entry->entry_id_length;
-    const char *target_entry_id = "hip-riscv64-unknown-linux-gnu-rv64gELF";
+    const char *target_entry_id = "hip-riscv64-unknown-linux-gnu-rv64g-ELF";
 
     for (uint32_t i=0; i<cob->entries_num; i++) {
         bundle_entry *entry = next_entry;
