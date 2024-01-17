@@ -1,6 +1,7 @@
 /*
  * Copyright © 2023 Sietium Semiconductor.
  */
+#pragma once
 
 #include <vector>
 #include <map>

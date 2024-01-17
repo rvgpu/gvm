@@ -1,4 +1,5 @@
 set(LIBCUDART_FIELS
+    cuda_initialize.cpp
     cuda_runtime.cpp
     cuda_runtime_api.cpp
     cuda_fatbinary.cpp

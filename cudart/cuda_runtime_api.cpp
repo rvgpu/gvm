@@ -7,15 +7,8 @@
 
 cudaError_t g_last_cudaError = cudaSuccess;
 
-#define likely(x) __builtin_expect(!!(x), 1)
-#define unlikely(x) __builtin_expect(!!(x), 0)
-
-inline cuda::Runtime *cuda_Runtime() {
-    static cuda::Runtime *rtstatic = NULL;
-    if (unlikely(rtstatic == NULL)) {
-        rtstatic = new cuda::Runtime();
-    }
-
+extern cuda::Runtime *rtstatic;
+static inline cuda::Runtime *cuda_Runtime() {
     return rtstatic;
 }
 
