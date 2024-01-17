@@ -11,7 +11,9 @@ link_directories(rvgpu PRIVATE ${rvgsim_LIBRARY_DIRS})
 include_directories(rvgpu PRIVATE ${rvgsim_INCLUDE_DIRS})
 
 include_directories(include)
+include_directories(${project_top_path})
 
+add_subdirectory(utils)
 add_subdirectory(include)
 add_subdirectory(device)
 add_subdirectory(cudart)
