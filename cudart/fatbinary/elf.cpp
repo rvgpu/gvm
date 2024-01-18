@@ -11,12 +11,12 @@ using namespace cuda;
 
 #include <cstdio>
 ELF::ELF(void *elf, int size) {
-    header = (Elf64_Ehdr *)elf;
-    if(MagicIsELF(header) == false) {
+    if (isRVGPU(elf) == false) {
         std::cout << "Error to check elf file" << std::endl;
         return ;
     }
     
+    header = (Elf64_Ehdr *)elf;
     // HeaderInfo(header);
 
     // Section Header List
@@ -36,15 +36,6 @@ ELF::ELF(void *elf, int size) {
             break;
         }
     }
-}
-
-bool ELF::MagicIsELF(void *header) {
-    // ELF的标识符为：7f 45 4c 46
-    char elfmagic[] = {
-        0x7f, 0x45, 0x4c, 0x46,
-    };
-
-    return (strncmp(elfmagic, static_cast<char *>(header), sizeof(elfmagic)) == 0);
 }
 
 void *ELF::FindSymbol(char *fname) {
@@ -80,6 +71,10 @@ bool ELF::GetFunction(void *psym, uint64_t &bin, uint32_t &size) {
     return ret;
 }
 
+char *ELF::SymbolName(uint32_t id) {
+    return string_table + id;
+}
+
 void ELF::HeaderInfo(void *header) {
     Elf64_Ehdr *h = (Elf64_Ehdr *)header;
     printf("ELF header:\n");
@@ -108,6 +103,26 @@ void ELF::SectionHeaderInfo(void *header) {
     printf("Section offset:                     %ld\n", h->sh_offset);
 }
 
-char *ELF::SymbolName(uint32_t id) {
-    return string_table + id;
+bool ELF::MagicIsELF(void *header) {
+    // ELF的标识符为：7f 45 4c 46
+    char elfmagic[] = {
+        0x7f, 0x45, 0x4c, 0x46,
+    };
+
+    return (strncmp(elfmagic, static_cast<char *>(header), sizeof(elfmagic)) == 0);
+}
+
+bool ELF::isRVGPU(void *header) {
+    Elf64_Ehdr *ehdr = (Elf64_Ehdr *)(header);
+
+    if (MagicIsELF(header) == false) {
+        return false;
+    }
+
+    // RVGPU的machine编号是259，这个并没有写入elf.h中，只在llvm中定义了
+    if (ehdr->e_machine != 259) {
+        return false;
+    }
+
+    return true;
 }

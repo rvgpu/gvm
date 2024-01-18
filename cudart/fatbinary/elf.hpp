@@ -22,6 +22,7 @@ public:
     bool GetFunction(void *psym, uint64_t &bin, uint32_t &size);
 
 private:
+    bool isRVGPU(void *header);
     bool MagicIsELF(void *header);
 
     // function to print elf info
