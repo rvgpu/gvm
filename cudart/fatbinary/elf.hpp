@@ -22,7 +22,7 @@ public:
     bool GetFunction(void *psym, uint64_t &bin, uint32_t &size);
 
 private:
-    bool CheckMagic(void *header);
+    bool MagicIsELF(void *header);
 
     // function to print elf info
     void HeaderInfo(void *header);

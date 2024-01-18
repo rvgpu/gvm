@@ -5,14 +5,14 @@
 #include <iostream>
 #include <cstring>
 
-#include "cuda_elf.hpp"
+#include "elf.hpp"
 
 using namespace cuda;
 
 #include <cstdio>
 ELF::ELF(void *elf, int size) {
     header = (Elf64_Ehdr *)elf;
-    if(CheckMagic(header) == false) {
+    if(MagicIsELF(header) == false) {
         std::cout << "Error to check elf file" << std::endl;
         return ;
     }
@@ -38,13 +38,13 @@ ELF::ELF(void *elf, int size) {
     }
 }
 
-bool ELF::CheckMagic(void *header) {
-    // 7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+bool ELF::MagicIsELF(void *header) {
+    // ELF的标识符为：7f 45 4c 46
     char elfmagic[] = {
-        0x7f, 0x45, 0x4c, 0x46, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x7f, 0x45, 0x4c, 0x46,
     };
 
-    return (strncmp(elfmagic, static_cast<char *>(header), 16) == 0);
+    return (strncmp(elfmagic, static_cast<char *>(header), sizeof(elfmagic)) == 0);
 }
 
 void *ELF::FindSymbol(char *fname) {

@@ -7,9 +7,8 @@
 #include <map>
 #include <stack>
 
+#include "fatbinary/fatbinary.hpp"
 #include "cuda_runtime_api.h"
-
-#include "cuda_fatbinary.hpp"
 #include "rvgpu.hpp"
 
 namespace cuda {

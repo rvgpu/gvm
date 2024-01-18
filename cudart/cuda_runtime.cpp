@@ -5,7 +5,6 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "cuda_fatbinary.hpp"
 #include "cuda_runtime.hpp"
 
 using namespace cuda;
