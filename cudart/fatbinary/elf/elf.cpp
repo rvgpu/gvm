@@ -19,23 +19,7 @@ ELF::ELF(void *elf, int size) {
     header = (Elf64_Ehdr *)elf;
     // HeaderInfo(header);
 
-    // Section Header List
-    section_header = (Elf64_Shdr *)((uint64_t)header + header->e_shoff);
-
-    // String Table Section index is header->e_shstrndx
-    strtab_section_header = section_header + header->e_shstrndx;
-    string_table = (char *)(strtab_section_header->sh_offset + uint64_t(header));
-
-    // Get Symbol Table
-    symtab_section_header = nullptr;
-    symbol_table = nullptr;
-    for (uint32_t i=0; i<header->e_shnum; i++) {
-        if (section_header[i].sh_type == SHT_SYMTAB) {
-            symtab_section_header = section_header + i;
-            symbol_table = (Elf64_Sym *)(symtab_section_header->sh_offset + uint64_t(header));
-            break;
-        }
-    }
+    m_section = new section(elf);
 }
 
 void *ELF::FindSymbol(char *fname) {
@@ -91,16 +75,6 @@ void ELF::HeaderInfo(void *header) {
     printf("Size of section headers:            %d\n", h->e_shentsize);
     printf("Number of section headers:          %d\n", h->e_shnum);
     printf("Section header string table index:  %d\n", h->e_shstrndx);
-}
-
-void ELF::SectionHeaderInfo(void *header) {
-    Elf64_Shdr *h = (Elf64_Shdr *)header;
-    printf("Section header:\n");
-    printf("Section Name:                       %s\n", SymbolName(h->sh_name));
-    printf("Section Type:                       %d\n", h->sh_type);
-    printf("Section flags:                      %ld\n", h->sh_flags);
-    printf("Section addr:                       %ld\n", h->sh_addr);
-    printf("Section offset:                     %ld\n", h->sh_offset);
 }
 
 bool ELF::MagicIsELF(void *header) {

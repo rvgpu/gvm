@@ -6,6 +6,7 @@
 #define __RVG_CUDART_ELF_H__
 
 #include "elf.h"
+#include "section.hpp"
 
 namespace cuda {
 
@@ -30,6 +31,7 @@ private:
     void SectionHeaderInfo(void *header);
     char *SymbolName(uint32_t id);
 
+    section *m_section;
     // ELF header
     Elf64_Ehdr *header;
 
