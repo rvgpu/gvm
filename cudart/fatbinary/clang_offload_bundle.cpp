@@ -77,18 +77,10 @@ ClangOffloadBundle::~ClangOffloadBundle() {
 }
 
 DeviceFunc *ClangOffloadBundle::GetDeviceFunc(char *funcname) {
-    DeviceFunc *ret = NULL;
+    DeviceFunc *ret = new DeviceFunc();
     for (ELF *elf : elfs) {
-        void *sym = elf->FindSymbol(funcname);
-        if (sym) {
-            uint64_t bin;
-            uint32_t size;
-            if (elf->GetFunction(sym, bin, size)) {
-                ret = new DeviceFunc();
-                ret->name = funcname;
-                ret->binary = bin;
-                ret->binsize = size;
-            }
+        if(elf->GetFunction(funcname, ret->binary, ret->binsize)) {
+            break;
         }
     }
 

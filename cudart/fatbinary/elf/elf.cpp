@@ -4,59 +4,23 @@
 
 #include <iostream>
 #include <cstring>
+#include <cstdio>
 
 #include "elf.hpp"
 
-using namespace cuda;
-
-#include <cstdio>
+namespace cuda {
 ELF::ELF(void *elf, int size) {
     if (isRVGPU(elf) == false) {
         std::cout << "Error to check elf file" << std::endl;
         return ;
     }
     
-    header = (Elf64_Ehdr *)elf;
-    // HeaderInfo(header);
-
+    // HeaderInfo(elf);
     m_section = new section(elf);
 }
 
-void *ELF::FindSymbol(char *fname) {
-    uint32_t symsize = symtab_section_header->sh_size / symtab_section_header->sh_entsize;
-    for (uint32_t i=0; i<symsize; i++) {
-        Elf64_Sym sym = symbol_table[i];
-        if (strcmp(SymbolName(sym.st_name), fname) == 0) {
-            return (void *)(symbol_table + i);
-        }
-    }
-    
-    return NULL;
-}
-
-bool ELF::GetFunction(void *psym, uint64_t &bin, uint32_t &size) {
-    Elf64_Sym *sym = (Elf64_Sym *)psym;
-    bool ret = false;
-
-    bin = 0;
-    size = 0;
-
-    if ((sym->st_info & 0xf) == STT_FUNC) {
-        Elf64_Shdr *sh = section_header + sym->st_shndx;
-        // SectionHeaderInfo(sh);
-
-        uint64_t texaddr = sh->sh_offset + uint64_t(header);
-        bin = texaddr + sym->st_value;
-        size = sym->st_size;
-
-        ret = true;
-    }
-
-    return ret;
-}
-
-char *ELF::SymbolName(uint32_t id) {
-    return string_table + id;
+bool ELF::GetFunction(char *fname, uint64_t &bin, uint32_t &size) {
+    return m_section->GetFunction(fname, bin, size);
 }
 
 void ELF::HeaderInfo(void *header) {
@@ -99,4 +63,6 @@ bool ELF::isRVGPU(void *header) {
     }
 
     return true;
+}
+
 }

@@ -1,27 +1,85 @@
+#include <cstring>
 #include "section.hpp"
+
+namespace cuda {
 
 section::section(void *elf)
 {
     m_baseaddr = (uint8_t *)elf;
     Elf64_Ehdr *ehdr = (Elf64_Ehdr *)(elf);
-    m_header = (Elf64_Shdr *)(m_baseaddr + ehdr->e_shoff);
+    m_shtab = (Elf64_Shdr *)(m_baseaddr + ehdr->e_shoff);
     m_shnum = ehdr->e_shnum;
-    m_shstrtab = (char *)(m_baseaddr + m_header[ehdr->e_shstrndx].sh_offset);
+    m_shstrtab = (char *)(m_baseaddr + m_shtab[ehdr->e_shstrndx].sh_offset);
 
-    HeaderInfo();
+    // HeaderInfo();
+
+    // 第一个section 是NULL???  可以跳过
+    for (uint32_t idx=1; idx<m_shnum; idx++) {
+        Elf64_Shdr *h = m_shtab + idx;
+        m_shname_id[SHNameStr(h->sh_name)] = h;
+    }
+
+    Elf64_Shdr *symtab_h = GetSection(std::string(".symtab"));
+    Elf64_Shdr *strtab_h = GetSection(std::string(".strtab"));
+    m_symtab = (Elf64_Sym *)(m_baseaddr + symtab_h->sh_offset);
+    m_symtab_num = symtab_h->sh_size / symtab_h->sh_entsize;
+    m_strtab = (char *)(m_baseaddr + strtab_h->sh_offset);
+}
+
+bool section::GetFunction(char *fname, uint64_t &bin, uint32_t &size) {
+    bool ret = false;
+
+    Elf64_Sym *sym = FindSymbol(fname);
+    if (sym == nullptr) {
+        printf("No such symbol %s found\n", fname);
+    } else {
+        if ((sym->st_info & 0xf) == STT_FUNC) {
+            Elf64_Shdr *sh = &m_shtab[sym->st_shndx];
+            bin = (uint64_t)(m_baseaddr + sh->sh_offset);
+            size = sym->st_size;
+            ret = true;
+        }
+    }
+
+    return ret;
+}
+
+Elf64_Sym *section::FindSymbol(char *name) {
+    Elf64_Sym *ret = nullptr;
+    for (uint32_t idx=0; idx<m_symtab_num; idx++) {
+        Elf64_Sym *sym = m_symtab + idx;
+        if (strcmp(SymbolNameStr(sym->st_name).c_str(), name) == 0) {
+            ret = sym;
+            break;
+        }
+    }
+
+    return ret;
+}
+
+Elf64_Shdr *section::GetSection(std::string str) {
+    if (m_shname_id.find(str) != m_shname_id.end()) {
+        return m_shname_id[str];
+    } else {
+        return nullptr;
+    }
 }
 
 void section::HeaderInfo() {
     printf("SECTION Info:\n");
     printf("           Name Type       Flags      Addr       Offset\n");
     for (uint32_t idx=0; idx<m_shnum; idx++) {
-        Elf64_Shdr *h = &m_header[idx];
+        Elf64_Shdr *h = &m_shtab[idx];
         printf("%15s %-8s 0x%-8lx 0x%-8lx 0x%-8lx\n", 
-            NameStr(h->sh_name).c_str(), TypeStr(h->sh_type).c_str(), h->sh_flags, h->sh_addr, h->sh_offset);
+            SHNameStr(h->sh_name).c_str(), TypeStr(h->sh_type).c_str(), h->sh_flags, h->sh_addr, h->sh_offset);
     }
 }
 
-std::string section::NameStr(uint32_t idx) {
+std::string section::SymbolNameStr(uint32_t idx) {
+    return std::string(m_strtab + idx);
+}
+
+std::string section::SHNameStr(uint32_t idx) {
     return std::string(m_shstrtab + idx);
 }
 
@@ -67,3 +125,5 @@ std::string section::TypeStr(uint32_t type) {
 
     return ret;
 }
+
+} // namespace cuda
