@@ -4,7 +4,7 @@ set(LIBCUDART_FIELS
     cuda_runtime_api.cpp
     fatbinary/fatbinary.cpp
     fatbinary/clang_offload_bundle.cpp
-    fatbinary/elf.cpp
+    fatbinary/elf/elf.cpp
    )
 
 add_library(cudart SHARED ${LIBCUDART_FIELS})

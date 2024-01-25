@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "utils/macro.hpp"
-#include "elf.hpp"
+#include "elf/elf.hpp"
 
 namespace cuda {
 
