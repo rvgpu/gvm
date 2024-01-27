@@ -17,6 +17,10 @@ ELF::ELF(void *elf, int size) {
     
     // HeaderInfo(elf);
     m_section = new section(elf);
+    m_program = new program(elf);
+
+    auto md = m_program->GetNoteHeader();
+    m_metadata = new metadata(md.first, md.second);
 }
 
 bool ELF::GetFunction(char *fname, uint64_t &bin, uint32_t &size) {

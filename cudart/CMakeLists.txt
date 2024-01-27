@@ -6,6 +6,8 @@ set(LIBCUDART_FIELS
     fatbinary/clang_offload_bundle.cpp
     fatbinary/elf/elf.cpp
     fatbinary/elf/section.cpp
+    fatbinary/elf/prog.cpp
+    fatbinary/elf/metadata.cpp
    )
 
 add_library(cudart SHARED ${LIBCUDART_FIELS})

@@ -7,6 +7,8 @@
 
 #include "elf.h"
 #include "section.hpp"
+#include "prog.hpp"
+#include "metadata.hpp"
 
 namespace cuda {
 
@@ -30,6 +32,8 @@ private:
     void HeaderInfo(void *header);
 
     section *m_section;
+    program *m_program;
+    metadata *m_metadata;
 };
 
 }
