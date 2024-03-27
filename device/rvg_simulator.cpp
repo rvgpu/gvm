@@ -50,7 +50,7 @@ void RVGSimulator::gpu_memcpy(uint64_t dst, const uint64_t src, uint32_t count, 
 }
 
 void RVGSimulator::SubmitJobs(uint64_t cmds) {
-    sim->write_register(0x1000, cmds);
-    sim->write_register(0x1010, mm->get_page_table_base());
-    sim->write_register(0x1008, 1);
+    sim->write_mmio(0x1000, cmds);
+    sim->write_mmio(0x1010, mm->get_page_table_base());
+    sim->write_mmio(0x1008, 1);
 }
