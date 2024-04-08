@@ -1,7 +1,7 @@
 ; ModuleID = 'libdevice.10.bc'
 source_filename = "libdevice.10.bc"
-target datalayout = "e-i64:64-v16:16-v32:32-n16:32:64"
-target triple = "nvptx64-nvidia-gpulibs"
+target datalayout = "e-i64:64-i128:128-v16:16-v32:32-n16:32:64"
+target triple = "rvgpu-sietium-gpulibs"
 
 %struct.uint2 = type { i32, i32 }
 %struct.float2 = type { float, float }
