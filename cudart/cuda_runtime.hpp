@@ -25,7 +25,7 @@ public:
 
     uint32_t PushCallConfiguration(dim3 gridDim, dim3 blockDim);
     uint32_t PopCallConfiguration(dim3 *grdiDim, dim3 *blockDim);
-    void LaunchKerne(const void *hostFun, dim3 gridDim, dim3 blockDim, void **args);
+    void LaunchKernel(const void *hostFun, dim3 gridDim, dim3 blockDim, void **args);
 private:
     typedef struct {
         dim3 grid;

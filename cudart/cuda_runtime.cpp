@@ -59,7 +59,7 @@ uint32_t Runtime::PopCallConfiguration(dim3 *gridDim, dim3 *blockDim) {
     return ret;
 }
 
-void Runtime::LaunchKerne(const void *hostFun, dim3 gridDim, dim3 blockDim, void **args) {
+void Runtime::LaunchKernel(const void *hostFun, dim3 gridDim, dim3 blockDim, void **args) {
     DeviceFunc *dev_fun = stored_func[uint64_t(hostFun)];
 
     uint64_t funcaddr = rvg->gpu_malloc(dev_fun->binsize);
